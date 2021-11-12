@@ -1,38 +1,37 @@
-from flask import Flask, render_template, request
-from flask_socketio import SocketIO
+from flask import Flask, render_template,request
+from flask_socketio import SocketIO,join_room, leave_room,send, emit
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-@app.route('/')
+@app.route('/', methods = ['GET','POST'])
 def index():
     return render_template('index.html')
 
-@app.route('/index2')
-def index2():
-    uname = request.args.get('username')
-    return render_template('index2.html',username = uname)
+@app.route('/chat', methods = ['GET','POST'])
+def chat():
+    name1 = request.form.get("Name") 
+    return render_template('chat.html', name = name1)
 
-# @socketio.on('connect')
-# def test_connect(auth):
-#     print('connected')
-
-@socketio.on('send_message')
-def handle_send_message_event(data):
-    app.logger.info("{} has sent message to the room {}: {}".format(data['username'],
-                                                                    data['room'],
-                                                                    data['message']))
-    socketio.emit('receive_message', data, room=data['room'])
-
-
-@socketio.on('my event')
+@socketio.on('message')
 def handle_message(data):
-    print(data['data'])
+    print('received message: ' + data['data'])
 
-@socketio.on('join_room')
-def handle_message(data):
-    print('sgjdsdg')
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    send(username + ' has entered the room.', to=room)
+
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    send(username + ' has left the room.', to=room)
 
 if __name__ == '__main__':
     socketio.run(app)

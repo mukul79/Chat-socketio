@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <title>Chat</title>
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
     integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
@@ -14,21 +13,17 @@
 <script type="text/javascript" charset="utf-8">
     var socket = io();
     socket.on('connect', function () {
-        socket.emit('message', { data: 'I\'m connected!' });
+        socket.emit('my event', { data: 'I\'m connected!' });
     });
-
-    function formSub(){
-        console.log("hdgoihdyged");
-        socket.emit('message', { data: '22' });
-    }
 </script>
 
 <body>
-    <form onsubmit="formSub(); return false;" method="post" action="/chat">
-        <label for="fname">Name:</label><br>
-        <input type="text" id="name" name="Name">
-        <input type="submit" value="Submit">
-    </form>
+    <label for="chat-message">Message</label><br>
+
+    <textarea id="chat-message" name="chat-message" rows="4" cols="50">
+
+</textarea>
+
 </body>
 
 </html>
