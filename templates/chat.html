@@ -15,14 +15,29 @@
     socket.on('connect', function () {
         socket.emit('my event', { data: 'I\'m connected!' });
     });
+
+    function formSub(){
+        console.log("hello")
+        //socket.emit('snd-message', { name: {{name}}, message:'message' });
+    }
+
+    socket.on('snd-message',function(){
+        console.log("kjsdsf");
+    });
+
+    
 </script>
 
 <body>
-    <label for="chat-message">Message</label><br>
 
-    <textarea id="chat-message" name="chat-message" rows="4" cols="50">
-
-</textarea>
+    <form method="post" onsubmit="formSub();return false">
+        <label for="fname">{{name}}</label><br>
+        <label for="chat-message">Message</label><br>
+        <textarea id="chat-message" name="chat-message" rows="4" cols="50">
+        </textarea>
+        <input type="submit" value="Submit">
+    </form>
+    
 
 </body>
 

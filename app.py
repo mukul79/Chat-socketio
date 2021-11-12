@@ -12,12 +12,17 @@ def index():
 
 @app.route('/chat', methods = ['GET','POST'])
 def chat():
-    name1 = request.form.get("Name") 
+    name1 = request.form.get("Name")
+    
     return render_template('chat.html', name = name1)
 
 @socketio.on('message')
 def handle_message(data):
     print('received message: ' + data['data'])
+
+@socketio.on('snd-message')
+def send_message(data):
+    print(data['name']+" kewthkelrt "+data["message"])
 
 @socketio.on('join')
 def on_join(data):
